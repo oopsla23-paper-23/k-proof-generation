@@ -2,13 +2,13 @@ int i, s, r;
 i = 0;
 s = 0;
 
-while (i < len(X)) {
-    s = s + (W[i] * X[i])
-    i = i + 1
+while (i < len) {
+  s = s + (W | i | * X | i |);
+  i = i + 1;
 }
 
 if (b < s) {
   r = 1;
+} else {
+  r = -1;
 }
-
-r = -1;
