@@ -2,12 +2,12 @@ int i, s, r;
 i = 0;
 s = 0;
 
-while (i < len) {
+while (i < L) {
   s = s + (W | i | * X | i |);
   i = i + 1;
 }
 
-if (b < s) {
+if (B < s) {
   r = 1;
 } else {
   r = -1;
