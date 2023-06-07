@@ -42,7 +42,9 @@ module IMP
 
   configuration <T color="yellow">
                   <k color="green"> $PGM:Pgm </k>
-                  <state color="red"> .Map </state>
+                  <state color="red">
+                   $IN:Map
+                  </state>
                 </T>
 
   rule <k> X:Id => I ...</k> <state>... X |-> I ...</state>
