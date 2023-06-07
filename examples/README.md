@@ -5,3 +5,8 @@ All undeclared variables in an imp program have to be provided in the input as f
 ```bash
 krun sum.imp -cIN="n |-> 10"
 ```
+
+Running with arrays:
+```bash
+krun svm.imp -cIN="len |-> 2 W |-> makeArray(2,3) X |-> makeArray(2,3) b |-> 20"
+```
