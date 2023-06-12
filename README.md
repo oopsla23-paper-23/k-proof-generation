@@ -1,7 +1,6 @@
-Proof Generation (demo)
---------------------------------------------------------------------------------
+# Proof Generation (demo)
 
-# Set-Up Instructions
+## Set-Up Instructions
 
 1. Clone all submodules
 
@@ -39,7 +38,7 @@ Proof Generation (demo)
     sudo apt-get install metamath
     ```
 
-# Proof Generation Instructions 
+## Proof Generation Instructions 
 
 We will use the `transfer.imp` program as an example. There are four inputs:
 1. `examples/csl23/blockchain/imp.k`: The semantics of IMP
@@ -74,7 +73,7 @@ Following these steps to generate and verify the proof for `transfer.imp`.
    All proofs in the database were verified in 10.32 s.
    ```
 
-# Current Examples
+## Current Examples
 
 - `examples/csl`: Examples for CSL
   - `examples/csl/svm`: support vector machine (SVM) exaxmples
