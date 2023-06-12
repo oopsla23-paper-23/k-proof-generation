@@ -1,0 +1,15 @@
+// Modified from the transfer function at
+//   https://docs.soliditylang.org/en/v0.8.17/contracts.html
+
+int addressTo, amount, balanceSender, balanceTo, ret;
+addressTo = 12345;
+amount = 10;
+balanceSender = 100;
+balanceTo = 200;
+if (amount > balanceSender){
+  ret = 0; // transfer is not successful
+} else {
+  balanceSender = balanceSender - amount;
+  balanceTo = balanceTo + amount;
+  ret = 1; // transfer is successful
+}
