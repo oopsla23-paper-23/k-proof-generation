@@ -1,16 +1,11 @@
-Generating Proof Certificates for a Language-Agnostic Deductive Program Verifier
+Proof Generation (demo)
 --------------------------------------------------------------------------------
 
-Welcome! This repository contains supplemental materials for our paper, including:
-- A formalization of reachability in Metamath (`theory/kore-reachability.mm`),
-- Our implementation for the proof generation procedure in the paper,
-- Scripts for the evaluation section.
-
-## Usage
+# Set-Up Instructions
 
 1. Clone all submodules
 
-    git submodule update --init --recursive --depth 1
+   ```git submodule update --init --recursive --depth 1```
 
 2. Install Z3 4.8.10 from [https://github.com/Z3Prover/z3/releases/tag/z3-4.8.10](https://github.com/Z3Prover/z3/releases/tag/z3-4.8.10)
 
@@ -23,7 +18,7 @@ Welcome! This repository contains supplemental materials for our paper, includin
     mvn package
     popd
     ```
-    NOTE: This will take about 20 minutes.
+    NOTE: This will take about 20 minutes. Use `mvn package -DskipTests` to skip tests.
     NOTE: You could also try to use a newer version of K but you would need to add an extra
     flag `--no-backend-hints` for the `scripts.prove_symbolic` script.
 
@@ -44,29 +39,45 @@ Welcome! This repository contains supplemental materials for our paper, includin
     sudo apt-get install metamath
     ```
 
-## Run evaluations in the paper
+# Proof Generation Instructions 
 
-See `examples/oopsla23/README.md` for details.
+We will use the `transfer.imp` program as an example. There are four inputs:
+1. `examples/csl23/blockchain/imp.k`: The semantics of IMP
+2. `IMP`: the main K module of IMP
+3. `examples/csl23/blockchain/transfer.imp`: the transfer program
+4. `proof-transfer`: the folder in which the generated proofs will be placed.
 
-## Examples of generating proofs for concrete rewriting
+Following these steps to generate and verify the proof for `transfer.imp`. 
 
-Suppose you have a K definition `def.k` with the main module `MAIN`, and a
-program `pgm.txt`, you can use
+1. Generate the proof(s).
 
-    python3 -m scripts.prove_symbolic def.k MAIN pgm.txt --output rewriting-proof
+   ```python3 -m scripts.prove_symbolic examples/csl23/blockchain/imp.k IMP examples/csl23/blockchain/transfer.imp --output proof-transfer```
 
-to generate the (concrete) rewriting proof for the program `pgm.txt` and output
-to the `rewriting-proof` directory.
+2. Load the proofs to Metamath
 
-Once that's done, you can use Metamath to verify the proof:
+   ```metamath proof-transfer/goal.mm```
 
-    $ metamath rewriting-proof/goal.mm
-    ...
-    77192945 bytes were read into the source buffer.
-    The source has 9148 statements; 4352 are $a and 1776 are $p.
-    No errors were found.  However, proofs were not checked.  Type VERIFY PROOF *
-    if you want to check them.
-    MM> verify proof *
-    0 10%  20%  30%  40%  50%  60%  70%  80%  90% 100%
-    ..................................................
-    MM>
+3. Within the Metamath command line `MM>`, type the following command to verify the proofs
+
+   ```verify proof *```
+
+4. You'll see that the proofs are verified.
+
+   ```
+   33787128 bytes were read into the source buffer.
+   The source has 16994 statements; 2586 are $a and 8360 are $p.
+   No errors were found.  However, proofs were not checked.  Type VERIFY PROOF *
+   if you want to check them.
+   MM> verify proof *
+   0 10%  20%  30%  40%  50%  60%  70%  80%  90% 100%
+   ..................................................
+   All proofs in the database were verified in 10.32 s.
+   ```
+
+# Current Examples
+
+- `examples/csl`: Examples for CSL
+  - `examples/csl/svm`: support vector machine (SVM) exaxmples
+    - `examples/csl/svm5.imp`: an SVM with 5 features
+  - `examples/csl/blockchain`: blockchain examples
+    - `examples/csl/blockchain/transfer.imp`: the transfer function
