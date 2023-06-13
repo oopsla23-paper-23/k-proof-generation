@@ -38,7 +38,7 @@
     sudo apt-get install metamath
     ```
 
-## Proof Generation Instructions 
+## Proof Generation Instructions
 
 We will use the `transfer.imp` program as an example. There are four inputs:
 1. `examples/csl23/blockchain/imp.k`: The semantics of IMP
@@ -46,11 +46,13 @@ We will use the `transfer.imp` program as an example. There are four inputs:
 3. `examples/csl23/blockchain/transfer.imp`: the transfer program
 4. `proof-transfer`: the folder in which the generated proofs will be placed.
 
-Following these steps to generate and verify the proof for `transfer.imp`. 
+Following these steps to generate and verify the proof for `transfer.imp`.
 
 1. Generate the proof(s).
 
    ```python3 -m scripts.prove_symbolic examples/csl23/blockchain/imp.k IMP examples/csl23/blockchain/transfer.imp --output proof-transfer```
+
+   If you want the proof to be in a single file, add the `--standalone` flag.
 
 2. Load the proofs to Metamath
 
@@ -76,7 +78,11 @@ Following these steps to generate and verify the proof for `transfer.imp`.
 ## Current Examples
 
 - `examples/csl`: Examples for CSL
-  - `examples/csl/svm`: support vector machine (SVM) exaxmples
+  - `examples/csl/svm`: support vector machine (SVM) examples
     - `examples/csl/svm5.imp`: an SVM with 5 features
+  - `examples/csl/multisvm`: support vector machine (SVM) examples with multiclass predictions
+    - `examples/csl/multisvm5.imp`: a multiclass SVM with 5 features
+  - `examples/csl/perceptron`: layer perceptron examples with the ReLU activation function
+    - `examples/csl/perceptron.imp`: a layer perceptron with 5 features
   - `examples/csl/blockchain`: blockchain examples
     - `examples/csl/blockchain/transfer.imp`: the transfer function
