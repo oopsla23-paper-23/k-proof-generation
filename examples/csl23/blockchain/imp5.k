@@ -1,6 +1,9 @@
-module IMP-SYNTAX
-  imports DOMAINS-SYNTAX
-  syntax AExp  ::= Int | Id
+module IMP5-SYNTAX
+  imports INT-SYNTAX
+  imports BOOL-SYNTAX
+
+  syntax Id2 ::= "x1" | "x2" | "x3" | "x4" | "x5"
+  syntax AExp  ::= Int | Id2
                  | "-" Int                    [format(%1%2)]
                  | AExp "/" AExp              [left, seqstrict, color(pink)]
                  | "(" AExp ")"               [bracket]
@@ -21,30 +24,39 @@ module IMP-SYNTAX
   syntax Block ::= "{" "}"
                  | "{" Stmt "}"               [format(%1%i%n%2%d%n%3)]
   syntax Stmt  ::= Block
-                 | Id "=" AExp ";"            [strict(2), color(pink), format(%1 %2 %3%4)]
+                 | Id2 "=" AExp ";"            [strict(2), color(pink), format(%1 %2 %3%4)]
                  | "if" "(" BExp ")"
                    Block "else" Block         [strict(1), colors(yellow, white, white, yellow), format(%1 %2%3%4 %5 %6 %7)]
                  | "while" "(" BExp ")" Block [colors(yellow,white,white), format(%1 %2%3%4 %5)]
                  > Stmt Stmt                  [left, format(%1%n%2)]
+  syntax Pgm ::= Stmt
   syntax Pgm ::= "int" Ids ";" Stmt           [format(%1 %2%3%n%4), colors(yellow,pink)]
-  syntax Ids ::= List{Id,","}                 [format(%1%2 %3)]
+  syntax Ids ::= List{Id2,","}                 [format(%1%2 %3)]
 
 endmodule
 
-module IMP
-  imports IMP-SYNTAX
-  imports DOMAINS
+module IMP5
+  imports IMP5-SYNTAX
+  imports INT
+  imports BOOL
 
   syntax KResult ::= Int | Bool
 
   configuration <T color="yellow">
                   <k color="green"> $PGM:Pgm </k>
-                  <state color="red">
-                    .Map
-                  </state>
+                  <x1 color="red"> 0 </x1>
+                  <x2 color="red"> 0 </x2>
+                  <x3 color="red"> 0 </x3>
+                  <x4 color="red"> 0 </x4>
+                  <x5 color="red"> 0 </x5>
                 </T>
 
-  rule <k> X:Id => I ...</k> <state>... X |-> I ...</state>
+  rule <k> x1 => I ...</k> <x1> I </x1>
+  rule <k> x2 => I ...</k> <x2> I </x2>
+  rule <k> x3 => I ...</k> <x3> I </x3>
+  rule <k> x4 => I ...</k> <x4> I </x4>
+  rule <k> x5 => I ...</k> <x5> I </x5>
+
   rule I1 / I2 => I1 /Int I2  requires I2 =/=Int 0
   rule I1 * I2 => I1 *Int I2
   rule I1 % I2 => I1 %Int I2
@@ -58,24 +70,24 @@ module IMP
   rule I1 >= I2 => I1 >=Int I2
   rule I1 > I2 => I1 >Int I2
   rule ! T => notBool T
-  rule C:Bool && B => B requires C
-  rule C:Bool && _ => false requires notBool C
+  rule true && B => B
+  rule false && _ => false
 
   rule {} => .   [structural]
   rule {S} => S  [structural]
 
-  rule <k> X = I:Int; => . ...</k> <state>... X |-> (_ => I) ...</state>
+  rule <k> x1 = I:Int; => . ...</k> <x1> _ => I </x1>
+  rule <k> x2 = I:Int; => . ...</k> <x2> _ => I </x2>
+  rule <k> x3 = I:Int; => . ...</k> <x3> _ => I </x3>
+  rule <k> x4 = I:Int; => . ...</k> <x4> _ => I </x4>
+  rule <k> x5 = I:Int; => . ...</k> <x5> _ => I </x5>
+
   rule S1:Stmt S2:Stmt => S1 ~> S2  [structural]
   rule if (true)  S else _ => S // requires C
   rule if (false) _ else S => S // requires notBool C
 
   rule while (B) S => if (B) {S while (B) S} else {}  [structural]
 
-  rule <k> int (X,Xs => Xs);_ </k> <state> _:Map (.Map => X|->0) </state>
-    // requires notBool (X in keys(Rho))
-  rule int .Ids; S => S  [structural]
+  rule int _L; S => S  [structural]
 
-  // a non-deterministic Boolean
-  // rule nondet => false
-  // rule nondet => true
 endmodule
