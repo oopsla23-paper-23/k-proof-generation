@@ -1,9 +1,6 @@
-requires "verification.k"
-
 module IMP-SYNTAX
   imports DOMAINS-SYNTAX
   syntax AExp  ::= Int | Id
-                 | Id "|" Id "|"
                  | "-" Int                    [format(%1%2)]
                  | AExp "/" AExp              [left, seqstrict, color(pink)]
                  | "(" AExp ")"               [bracket]
@@ -37,8 +34,6 @@ endmodule
 module IMP
   imports IMP-SYNTAX
   imports DOMAINS
-  imports VERIFICAITON
-  imports ARRAY
 
   syntax KResult ::= Int | Bool
 
@@ -49,11 +44,6 @@ module IMP
                   </state>
                 </T>
 
-  rule <k> X:Id | Y:Id | => A[I]...</k>
-    <state>...
-        Y |-> I
-        X |-> A:Array
-    ...</state> [ priority(100) ]
   rule <k> X:Id => I ...</k> <state>... X |-> I ...</state>
   rule I1 / I2 => I1 /Int I2  requires I2 =/=Int 0
   rule I1 * I2 => I1 *Int I2
