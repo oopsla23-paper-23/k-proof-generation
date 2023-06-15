@@ -1,26 +1,21 @@
 int x1, x2, x3, x4, x5,
-    w1, w2, w3, w4, w5, b,
-    ps, ret;
+    ret;
 x1 = 1;
 x2 = 2;
 x3 = 3;
 x4 = 4;
 x5 = 5;
-w1 = -1;
-w2 = -2;
-w3 = -3;
-w4 = -4;
-w5 = -5;
-b = 0;
 
-ps = 0;
-ps = ps + (w1 * x1);
-ps = ps + (w2 * x2);
-ps = ps + (w3 * x3);
-ps = ps + (w4 * x4);
-ps = ps + (w5 * x5);
+ret = 0;
+// ret + w_i * x_i
+ret = ret + (-1 * x1);
+ret = ret + (-2 * x2);
+ret = ret + (-3 * x3);
+ret = ret + (-4 * x4);
+ret = ret + (-5 * x5);
 
-if (ps - b > 0) {
+// ret - b
+if (ret - 1 > 0) {
   ret = 1;
 } else {
   ret = -1;
