@@ -75,6 +75,38 @@ Following these steps to generate and verify the proof for `transfer.imp`.
    All proofs in the database were verified in 10.32 s.
    ```
 
+## Proof compression
+
+Generated proofs are usually very large.
+There are two generic techniques how to deal with this.
+
+### Metamath compression
+
+We can apply a built-in Metamath compression to generated proofs, it often helps.
+
+For the CSL23 demo, the easiest way is to use `gen_proofs.sh`.
+The `gen_proofs.sh` generates the proof and then applies Metamath compression in a postprocessing stage:
+
+```sh
+bash ./gen_proofs.sh {EXAMPLE_FOLDER_IN_CSL23} {IMP_FILE_TO_RUN} {OUTPUT_FILE_NAME}
+```
+
+### Slicing
+
+Proofs can also be sliced into multiple smaller proofs for parallelization as follows:
+
+```sh
+python3 -m scripts.metamath-extract {PROOF_MM_FILE} {OUTPUT_DIR}
+```
+
+All proofs in `OUTPUT_DIR` can be checked as follows:
+```sh
+cd {OUTPUT_DIR}
+for f in *; do metamath "read '$f'" "verify proof *" "exit" >> ../log.txt; done;
+```
+
+The file `log.txt` in the parent directory contains all the logs from Metamath verification, including possible errors.
+
 ## Current Examples
 
 - `examples/csl`: Examples for CSL
