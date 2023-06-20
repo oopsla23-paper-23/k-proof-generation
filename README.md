@@ -135,6 +135,13 @@ for f in *; do metamath "read '$f'" "verify proof *" "exit" >> ../log.txt; done;
 
 The file `log.txt` in the parent directory contains all the logs from Metamath verification, including possible errors.
 
+## Running on CUDA
+
+If you want to run with, edit the file `risc0-metamath-15/host/Cargo.toml` with the following line:
+
+```toml
+risc0-zkvm = { version = "0.15.2", features = ["cuda"] }
+```
 
 ## Current Examples
 
