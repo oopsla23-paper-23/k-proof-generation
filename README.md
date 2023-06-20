@@ -22,23 +22,51 @@
     flag `--no-backend-hints` for the `scripts.prove_symbolic` script.
 
     Finally, add K binaries to `PATH`:
-    ```
-    export PATH=$(realpath deps/k/k-distribution/target/release/k/bin):$PATH`
+    ```sh
+    export PATH=$(realpath deps/k/k-distribution/target/release/k/bin):$PATH
     ```
 
 4. Install Python prerequisites (NOTE: Python 3.7+ is required)
 
-    ```
+    ```sh
     python3 -m pip install -r requirements.txt
     ```
 
 5. Install Metamath for verification
 
-    ```
+    ```sh
     sudo apt-get install metamath
     ```
+6. Install RISC0 for ZK in the `risc0-metamath-15` directory:
 
-## Proof Generation Instructions
+   ```sh
+   cd risc0-metamath-15
+   cargo install
+   ```
+
+## One-liner
+
+If you have `cargo install`'ed in `risc0-metamath` already, then the following one-liner should work in most cases.
+It generathes the proof for the given source file, compresses it and slices into independent proof objects, then runs it in the RISC0 zkVM.
+
+```sh
+bash ./qed.sh {SEMANTICS_FILEPATH} {SEMANTICS_MODULE} {SRC_FILEPATH} {OUTPUT_FILEPATH} {TARGET_THEOREM}
+```
+
+`{TARGET_THEOREM}` is the name of the theorem whose hash we are interested in.
+The compressed MM proof will be at `OUTPUT_FILEPATH`, its sliced version in `risc0-metamath/OUTPUT_FILEPATH-sliced`.
+
+### Troubleshooting
+
+It might happen you need to switch to `rust` nightly compiler.
+Install `rustup` and then run
+
+```sh
+rustup install nightly
+rustup default nightly
+```
+
+## Proof Generation Step-By-Step
 
 We will use the `transfer.imp` program as an example. There are four inputs:
 1. `examples/csl23/blockchain/imp.k`: The semantics of IMP
@@ -75,23 +103,23 @@ Following these steps to generate and verify the proof for `transfer.imp`.
    All proofs in the database were verified in 10.32 s.
    ```
 
-## Proof compression
+### Proof compression
 
 Generated proofs are usually very large.
 There are two generic techniques how to deal with this.
 
-### Metamath compression
+#### Metamath compression
 
 We can apply a built-in Metamath compression to generated proofs, it often helps.
-
-For the CSL23 demo, the easiest way is to use `gen_proofs.sh`.
-The `gen_proofs.sh` generates the proof and then applies Metamath compression in a postprocessing stage:
+This is done through Metamath CLI as follows:
 
 ```sh
-bash ./gen_proofs.sh {EXAMPLE_FOLDER_IN_CSL23} {IMP_FILE_TO_RUN} {OUTPUT_FILE_NAME}
+metamath {PROOF_FILEPATH}
+save proof * /compressed
+write source
 ```
 
-### Slicing
+#### Slicing
 
 Proofs can also be sliced into multiple smaller proofs for parallelization as follows:
 
@@ -106,6 +134,7 @@ for f in *; do metamath "read '$f'" "verify proof *" "exit" >> ../log.txt; done;
 ```
 
 The file `log.txt` in the parent directory contains all the logs from Metamath verification, including possible errors.
+
 
 ## Current Examples
 
