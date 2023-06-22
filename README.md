@@ -50,11 +50,14 @@ If you have `cargo install`'ed in `risc0-metamath` already, then the following o
 It generathes the proof for the given source file, compresses it and slices into independent proof objects, then runs it in the RISC0 zkVM.
 
 ```sh
-bash ./qed.sh {SEMANTICS_FILEPATH} {SEMANTICS_MODULE} {SRC_FILEPATH} {OUTPUT_FILEPATH} {TARGET_THEOREM}
+bash ./qed.sh {SEMANTICS_FILEPATH} {SEMANTICS_MODULE} {SRC_FILEPATH} {OUTPUT_FILEPATH} {TARGET_THEOREM} {LOG_FILE}
 ```
+
+(run from the project root folder)
 
 `{TARGET_THEOREM}` is the name of the theorem whose hash we are interested in.
 The compressed MM proof will be at `OUTPUT_FILEPATH`, its sliced version in `risc0-metamath/OUTPUT_FILEPATH-sliced`.
+Time measurements will be saved to {LOG_FILE}.
 
 ### Troubleshooting
 
@@ -162,5 +165,7 @@ This means they are sliced goals and using abbreviation techniques to press the 
 The script `bench.sh` will run RISC0 on these examples and save the results in {LOG_FILE}:
 
 ```sh
-./bench.sh {LOG_FILE}
+bash ./bench.sh {LOG_FILE}
 ```
+
+(run from the project root folder)
