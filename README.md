@@ -154,3 +154,13 @@ risc0-zkvm = { version = "0.15.2", features = ["cuda"] }
     - `examples/csl/perceptron.imp`: a layer perceptron with 5 features
   - `examples/csl/blockchain`: blockchain examples
     - `examples/csl/blockchain/transfer.imp`: the transfer function
+
+### Benchmarking
+
+The folder `mm-benchmarks` contains the best proofs we have for benchmarking Current Examples.
+This means they are sliced goals and using abbreviation techniques to press the size down.
+The script `bench.sh` will run RISC0 on these examples and save the results in {LOG_FILE}:
+
+```sh
+./bench.sh {LOG_FILE}
+```
